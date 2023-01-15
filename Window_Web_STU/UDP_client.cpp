@@ -10,16 +10,28 @@ int UDP::UDP_Client()
 	SOCKET local_sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
 	sockaddr_in server_addr;
+<<<<<<< HEAD
 	server_addr.sin_addr.S_un.S_addr = inet_addr("120.79.172.7");
+=======
+	server_addr.sin_addr.S_un.S_addr = inet_addr("47.113.190.21");
+>>>>>>> æ·»åŠ é¡¹ç›®æ–‡ä»¶ã€?
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(9898);
 
 	sendto(local_sock, NULL, 0, 0, (sockaddr*)&server_addr, sizeof(sockaddr));
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> æ·»åŠ é¡¹ç›®æ–‡ä»¶ã€?
 	//´´½¨Client½á¹¹Ìå´æ´¢ÐÅÏ¢
 	Client target_client;
 	target_client.sockaddr_len = sizeof(sockaddr);
 	target_client.sock = local_sock;
+<<<<<<< HEAD
+=======
+	printf("????\n");
+>>>>>>> æ·»åŠ é¡¹ç›®æ–‡ä»¶ã€?
 	recvfrom(local_sock, (char*)&target_client.sock_addr, sizeof(sockaddr), 0, (sockaddr*)&server_addr, &target_client.sockaddr_len);
 
 	printf("%s: %d\n", inet_ntoa(target_client.sock_addr.sin_addr), htons(target_client.sock_addr.sin_port));

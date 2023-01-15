@@ -3,10 +3,13 @@
 
 #pragma comment(lib,"ws2_32.lib")
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> æ·»åŠ é¡¹ç›®æ–‡ä»¶ã€?
 int TCP::TCP_Client()
 {
 	WSADATA data;
@@ -23,7 +26,11 @@ int TCP::TCP_Client()
 
 	sockaddr_in ip_adress;
 	ip_adress.sin_family = AF_INET;
+<<<<<<< HEAD
 	ip_adress.sin_addr.S_un.S_addr = inet_addr("120.79.172.7");
+=======
+	ip_adress.sin_addr.S_un.S_addr = inet_addr("47.113.190.21");
+>>>>>>> æ·»åŠ é¡¹ç›®æ–‡ä»¶ã€?
 	ip_adress.sin_port = htons(9898);
 
 
@@ -61,7 +68,11 @@ bool TCP::Send_Message(void* server) {
 			closesocket(taget);
 			exit(0);
 		}
+<<<<<<< HEAD
 		if (send(taget, send_buf, strlen(send_buf), 0) < 0) {
+=======
+		if (send(taget, send_buf, strlen(send_buf)+1, 0) < 0) {
+>>>>>>> æ·»åŠ é¡¹ç›®æ–‡ä»¶ã€?
 			MessageBoxW(NULL, L"ÏûÏ¢·¢ËÍÊ§°Ü£¬ÇëÖØÊÔ", L"message", MB_OK | MB_ICONERROR);
 		}
 
