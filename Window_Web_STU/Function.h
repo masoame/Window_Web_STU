@@ -4,6 +4,9 @@
 
 extern char buffer_send[1024];
 extern char buffer_recv[1024];
+extern int islink[2];
+extern char buffer_file[1024*8];
+
 
 struct Client {
 	SOCKET sock;
@@ -27,6 +30,8 @@ namespace UDP {
 	extern int thread_to_send(LPVOID argv);
 
 	extern int thread_to_recv(LPVOID argv);
+
+	extern void HeartBeat(LPVOID argv);
 }
 
 #define Check_Function(function) \
