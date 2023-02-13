@@ -28,12 +28,12 @@ int UDP::UDP_Client()
 
 	HANDLE h_recv = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)thread_to_recv, &target_client, 0, NULL);
 	HANDLE h_send = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)thread_to_send, &target_client, 0, NULL);
-	HANDLE h_headth = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HeartBeat, &target_client, 0, NULL);
+	HANDLE h_heart = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HeartBeat, &target_client, 0, NULL);
 
 
 	Signed_show(WaitForSingleObject(h_recv, INFINITE));
 	Signed_show(WaitForSingleObject(h_send, INFINITE));
-	Signed_show(WaitForSingleObject(h_headth, INFINITE));
+	Signed_show(WaitForSingleObject(h_heart, INFINITE));
 
 
 
@@ -52,6 +52,7 @@ int UDP::thread_to_send(LPVOID argv) {
 		scanf_s("%s", buffer_send);
 		
 		if (!strcmp(buffer_send, "#quit") || !strcmp(buffer_send, "#QUIT")) {
+			
 			sendto(client_taget->sock, buffer_send, strlen(buffer_send) + 1, 0, (sockaddr*)&client_taget->sock_addr, client_taget->sockaddr_len);
 			closesocket(client_taget->sock);
 			WSACleanup();
@@ -83,14 +84,18 @@ int UDP::thread_to_recv(LPVOID argv) {
 			if (ret == 3) {
 				if (buffer_recv[1] == '0' || buffer_recv[1] == '1' || buffer_recv[1] == '2') {
 					buffer_recv[1]++;
-					sendto(client_taget->sock, buffer_recv, 3, 0, (sockaddr*)&client_taget->sock_addr, client_taget->sockaddr_len);
-					if (buffer_recv[1] == '1') 	islink[0] = 1;
+					ret = sendto(client_taget->sock, buffer_recv, 3, 0, (sockaddr*)&client_taget->sock_addr, client_taget->sockaddr_len);
+					if (buffer_recv[1] == '2' && ret == 3) 	islink = 3;
 				}
 			}
 			else if(!strcmp(buffer_recv, "#quit") || !strcmp(buffer_recv, "#QUIT")) {
 				closesocket(client_taget->sock);
 				WSACleanup();
 				exit(0);
+			}
+			else if (strcmp(buffer_recv, "#file:")> 0 && !h_sendfile ) {
+				
+				//h_sendfile = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HeartBeat, NULL, 0, NULL);
 			}
 			continue;
 		}
@@ -105,20 +110,24 @@ void UDP::HeartBeat(LPVOID argv) {
 	Sleep(1000);
 	Client* client_taget = (Client*)argv;
 	int ret;
-	islink[1] = 3;
-	while (islink[1])
+	islink = 4;
+	while (islink)
 	{
-		islink[1]--;
-		islink[0] = 0;
+		while (true) {
+			Sleep(1000);
+		}
+		islink--;
 		ret = sendto(client_taget->sock, "#0", 3, 0, (sockaddr*)&client_taget->sock_addr, client_taget->sockaddr_len);
 		if (ret == -1) continue;
 		Sleep(4000);
-		if (!islink[0]) continue;
-		else islink[1] = 3;
+		if (islink == 4) continue;
 		
 	}
 	closesocket(client_taget->sock);
 	WSACleanup();
 	exit(-1);
+
 }
+
+
 
