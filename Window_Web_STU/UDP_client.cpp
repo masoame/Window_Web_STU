@@ -3,9 +3,7 @@
 
 int UDP::Connect_p2p()
 {
-	while (true) {
 
-	}
 	return 0;
 }
 
