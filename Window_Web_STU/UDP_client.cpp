@@ -1,9 +1,30 @@
 #include"Function.h"
 #include<stdio.h>
 
-int UDP::Connect_p2p()
+int UDP::Connect_p2p(LPVOID argv)
 {
+	Client* client = (Client*)argv;
+	UDP::head out = { 0 }, in = { 0 };
+	int fromlen;
 
+
+	int ret = sendto(sock, NULL, NULL, 0, (sockaddr*)&client->sock_addr, sizeof(sockaddr));
+
+	out.message = 0x08;
+	ret = sendto(sock, (char*)&out, 16, 0, (sockaddr*)&server_addr, sizeof(sockaddr));
+
+
+	//Ä£·ÂTCPÎÕÊÖ
+	out.message = 0x04;
+	out.ACK = rand();
+	ret = sendto(sock, (char*)&out, 16, 0, (sockaddr*)&client->sock_addr, sizeof(sockaddr));
+	ret = recvfrom(sock, (char*)&in, 16, 0, (sockaddr*)&client->sock_addr, &fromlen);
+	if (ret == 16 && in.message == 0x2 && in.ACK == out.ACK + 1) {
+		ret = sendto(sock, (char*)&out, 16, 0, (sockaddr*)&client->sock_addr, sizeof(sockaddr));
+	}
+	else {
+		return -1;
+	}
 	return 0;
 }
 
@@ -15,8 +36,6 @@ int UDP::UDP_Client()
 
 	SOCKET local_udp = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
-
-	sockaddr_in server_addr;
 	server_addr.sin_addr.S_un.S_addr = inet_addr("47.113.190.21");
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(9898);
@@ -113,12 +132,6 @@ int UDP::thread_to_recv(LPVOID argv) {
 }
 
 void UDP::HeartBeat(LPVOID argv) {
-	Sleep(1000);
-	Client* client_taget = (Client*)argv;
-	int ret;
-	islink = 4;
-
-
 	while (islink)
 	{
 		

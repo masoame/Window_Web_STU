@@ -1,16 +1,18 @@
 #pragma once
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include<WinSock2.h>
+extern sockaddr_in server_addr;
+extern SOCKET sock;
 
 extern char buffer_send[1024];
 extern char buffer_recv[1024];
-extern char buffer_file[1024*8];
+extern char buffer_file[1024 * 8];
 
 extern int islink;
 extern HANDLE h_recvfile;
 extern HANDLE h_sendfile;
 
-extern int Test();
+
 
 struct Client {
 	SOCKET sock;
@@ -20,25 +22,19 @@ struct Client {
 	int sockaddr_len;
 };
 
-namespace TCP {
-	extern int TCP_Client();
 
-	extern bool Send_Message(void* server);
-
-	extern bool RecvMessage(void* server);
-}
 
 namespace UDP {
 
 	struct head {
-		unsigned int message;						//0x01=FIN 0x02=SEQ 0x04=ACK;
+		short message;						//0x01=FIN 0x02=SEQ 0x04=ACK 0x08=connect2client
 		int ACK, SEQ, Temp;
 
 	};
 
 
 
-	extern int Connect_p2p();
+	extern int Connect_p2p(LPVOID argv);
 
 	extern int UDP_Client();
 
