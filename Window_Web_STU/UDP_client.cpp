@@ -1,6 +1,14 @@
 #include"Function.h"
 #include<stdio.h>
 
+int UDP::Connect_p2p()
+{
+	while (true) {
+
+	}
+	return 0;
+}
+
 int UDP::UDP_Client()
 {
 	WSAData wsadata;
@@ -111,15 +119,16 @@ void UDP::HeartBeat(LPVOID argv) {
 	Client* client_taget = (Client*)argv;
 	int ret;
 	islink = 4;
+
+
 	while (islink)
 	{
-		while (true) {
-			Sleep(1000);
-		}
+		
 		islink--;
 		ret = sendto(client_taget->sock, "#0", 3, 0, (sockaddr*)&client_taget->sock_addr, client_taget->sockaddr_len);
 		if (ret == -1) continue;
 		Sleep(4000);
+
 		if (islink == 4) continue;
 		
 	}
@@ -127,6 +136,16 @@ void UDP::HeartBeat(LPVOID argv) {
 	WSACleanup();
 	exit(-1);
 
+}
+
+int UDP::thread_to_sendfile(LPVOID argv)
+{
+	return 0;
+}
+
+int UDP::thread_to_recvfile(LPVOID argv)
+{
+	return 0;
 }
 
 

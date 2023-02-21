@@ -10,6 +10,8 @@ extern int islink;
 extern HANDLE h_recvfile;
 extern HANDLE h_sendfile;
 
+extern int Test();
+
 struct Client {
 	SOCKET sock;
 
@@ -27,6 +29,17 @@ namespace TCP {
 }
 
 namespace UDP {
+
+	struct head {
+		unsigned int message;						//0x01=FIN 0x02=SEQ 0x04=ACK;
+		int ACK, SEQ, Temp;
+
+	};
+
+
+
+	extern int Connect_p2p();
+
 	extern int UDP_Client();
 
 	extern int thread_to_send(LPVOID argv);

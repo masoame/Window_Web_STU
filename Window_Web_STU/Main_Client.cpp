@@ -1,6 +1,7 @@
 #include"Function.h"
-
+#include<iostream>
 int main()
 {
-	return UDP::UDP_Client();
+	UDP::UDP_Client();
+	return 0;
 }

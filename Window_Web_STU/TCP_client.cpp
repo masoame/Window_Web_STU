@@ -83,6 +83,7 @@ bool TCP::RecvMessage(void* server){
 		len = recv(taget, recv_buf, sizeof(recv_buf) - 1, 0);
 		if (len == -1) return -1;
 		recv_buf[len] = 0;
-		printf("%s\n", recv_buf);
+		printf("%d\n", len);
+		Sleep(1000);
 	}
 }
